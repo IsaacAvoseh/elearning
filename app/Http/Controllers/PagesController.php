@@ -217,6 +217,58 @@ class PagesController extends Controller
 
 
 
+
+
+
+    public function AdminRegister(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'firstname' => 'required|string|',
+                'lastname' => 'required|string|',
+                'phone' => 'required|string|',
+                // 'skills' => 'required|string|',
+                // 'bio' => 'required|string|',
+                'password' => 'required|string|min:6|confirmed',
+            ]);
+
+
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+                $image_name = $image->getClientOriginalName();
+                $image->move(public_path('/images'), $image_name);
+                $image_path = '/images/' . $image_name;
+            } else {
+                $image_path = 'images/default.jpg';
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'status' => 'active',
+                'type' => 'instructor',
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'phone' => $request->phone,
+                'skills' => $request->skills,
+                'bio' => $request->bio,
+                'photo' => $image_path,
+                'password' => Hash::make($request->password),
+            ]);
+
+            $user->attachRole('admin');
+
+            return redirect()->route('login')->with('success', 'Admin account created successfully');
+        }
+        return view('register');
+    }
+
+
+
+
+
     public function InstructorRegister(Request $request)
     {
         if ($request->isMethod('post')) {
