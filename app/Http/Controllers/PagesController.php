@@ -414,11 +414,14 @@ class PagesController extends Controller
 
  
         //total amount from database
-        $totalAmount = DB::raw('SUM(amount)');
-        // $totalAmount = DB::table('payments')->sum('amount');
+        // $totalAmount = DB::raw('SUM(amount)');
+        $totalAmount = DB::table('payments')->sum('amount');
+        // dd($totalAmount);
 
         //total earnings for an instructor
+        // $totalInstructorEarnings = DB::table('payments')->where('user_id', Auth::user()->id)->select("SUM(amount)");
         $totalInstructorEarnings = DB::table('payments')->where('instructor', Auth::user()->name)->sum('amount');
+        // dd($totalInstructorEarnings);
         // dd($totalInstructorEarnings);
 
         //total students enrolled for an instructor course
