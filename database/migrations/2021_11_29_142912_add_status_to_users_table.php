@@ -15,6 +15,8 @@ class AddStatusToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('status')->after('email');
+            $table->string('type')->nullable()->after('email');
+
         });
     }
 
