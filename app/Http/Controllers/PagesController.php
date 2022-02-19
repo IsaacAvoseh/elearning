@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use PhpParser\Node\Expr\Cast;
 
 class PagesController extends Controller
 {
@@ -412,10 +412,13 @@ class PagesController extends Controller
         //total number of students
         $allstudents = User::all()->where('type', 'student')->count();
 
- 
+
         //total amount from database
+        //  $totalAmount[0] = Payments::select(DB::raw('sum(cast(amount as double))'))->get();
         // $totalAmount = DB::raw('SUM(amount)');
+        // $totalAmount = Payments::select(DB::raw('sum(cast(amount as double precision))'))->get();
         $totalAmount = DB::table('payments')->sum('amount');
+        // dd($totalAmount);
         // dd($totalAmount);
 
         //total earnings for an instructor

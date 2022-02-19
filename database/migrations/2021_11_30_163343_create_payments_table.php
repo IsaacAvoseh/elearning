@@ -18,7 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('status');
-            $table->string('amount');
+            $table->integer('amount');
             // $table->string('instructor');
             $table->timestamps();
         });
