@@ -31,7 +31,8 @@ class PaymentController extends Controller
     {
         $paymentDetails = Paystack::getPaymentData(Request()->get('paymentData'));
 
-        //save payment details to database
+        // save payment details to database
+        dd($paymentDetails);
         Payments::create([
             'user_id' => Auth::user()->id,
             'course_id' => $paymentDetails['data']['metadata']['course_id'],
@@ -40,7 +41,6 @@ class PaymentController extends Controller
            'status' => $paymentDetails['data']['status'],
             
                 ]);
-// dd($paymentDetails);
         //redirect to payment page
         return redirect()->route('dashboard')->withMessage(['success' => 'Payment Successful', 'type' => 'success']);
       dd($paymentDetails);
