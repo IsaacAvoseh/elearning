@@ -552,6 +552,7 @@
 
                             <?php
                             $meta = ['course_id' => $courses->id, 'instructor' => $courses->instructor, 'amount' => $courses->price];
+                          
                             ?>
 
                             <input type="hidden" name="metadata" value="{{ json_encode($meta) }}">
