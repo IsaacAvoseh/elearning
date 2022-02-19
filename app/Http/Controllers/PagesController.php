@@ -438,7 +438,7 @@ class PagesController extends Controller
         //list of course enrolled for by a student
         $enrolled = Payments::with( 'course')->where('user_id', Auth::user()->id)->orWhere('course_id')->get();
         // dd(Auth::user()->id);
-        dd($enrolled);
+        // dd($enrolled);
         //all categories 
           $categoryCount = DB::table('categories')->count()
 ;
