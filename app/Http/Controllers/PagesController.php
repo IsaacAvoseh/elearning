@@ -436,7 +436,7 @@ class PagesController extends Controller
         //
 
         //list of course enrolled for by a student
-        $enrolled = Payments::with( 'course')->where('user_id', Auth::user()->id)->orWhere('course_id')->get();
+        $enrolled = Payments::with( 'course')->where('user_id', Auth::user()->id)->get();
         // dd(Auth::user()->id);
         // dd($enrolled);
         //all categories 
@@ -498,28 +498,55 @@ class PagesController extends Controller
 
 
 
-    public function viewEnrolledCourses($id)
+    public function viewEnrolledCourses(Request $request, $id, $user_id = null)
     {
 
-        // $courses = Course::find($id);
+    // $courses = Course::find($id);
+    // dd($courses);
+    // $courses->instructor = $courses->user->name;
+    // dd($courses->instructor);
+    // $modules =  $courses->modules;
+    // $lessons = $courses->lessons;
+
+    // $payments = $courses->payments()->first();
+
+    // $courses->payments = $payments;
+    //     $enrolled = Payments::with('course')->where('user_id', Auth::user()->id)->orWhere('course_id', 'course_id')->get();
+    //     $en = $enrolled->find($id);
+    //    $last = $en->course->with('modules', 'lessons')->first();
+    //     dd($last);
+    //     dd($enrolled);
+
+    //  dd($enrolled->course());
+
+    // return view('admin.view', compact('courses', 'modules', 'lessons'));
+    // return view('course_details');
+
+
+
+ 
+
+        $courses = Course::find($id);
         // dd($courses);
-        // $courses->instructor = $courses->user->name;
-        // dd($courses->instructor);
-        // $modules =  $courses->modules;
-        // $lessons = $courses->lessons;
+        $courses->instructor = $courses->users->name;
+        $modules =  $courses->modules;
+        $lessons = $courses->lessons;
+        // dd($modules);
 
-        // $payments = $courses->payments()->first();
-
+        // $payments = $courses->payments()->get();  //use first() to get the first record
         // $courses->payments = $payments;
-        $enrolled = Payments::with('course')->where('user_id', Auth::user()->id)->orWhere('course_id', 'course_id')->get();
-        // dd($enrolled);
 
-        //  dd($enrolled->course());
+        $payments = Payments::where('course_id', $id)->where('user_id', Auth::user()['id'])->first();
+        // dd($payments);
+
+        return view('admin.view', compact('courses', 'modules', 'lessons', 'payments'));
+    
 
 
-          
 
-            return view('admin.view', compact('courses', 'modules', 'lessons'));
+
+
+
     }
    
 

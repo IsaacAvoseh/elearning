@@ -309,7 +309,7 @@
                                     <td scope="row">{{$course->course->title}}
                                     </td>
                                     <td>{{$course->instructor}}</td>
-                                    <td><a style="background-color: blue; color:white" class="btn btn-btn-primary" href="/view/{{ $course->id }}">View</a></td>
+                                    <td><a style="background-color: blue; color:white" class="btn btn-btn-primary" href="/view/{{ $course->course_id }}">View</a></td>
 
                                 </tr>
 

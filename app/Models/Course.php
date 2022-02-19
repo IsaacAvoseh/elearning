@@ -34,7 +34,7 @@ public function lessons()
 
 public function modules()
 {
-    return $this->hasMany(Module::class);
+    return $this->hasMany(Module::class, 'course_id');
 }
 
 
