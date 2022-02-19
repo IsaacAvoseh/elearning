@@ -160,7 +160,7 @@ class PagesController extends Controller
 
         $courses = Course::find($id);
         $courses->instructor = $courses->users->name;
-        dd($courses);
+        // dd($courses);
         $modules =  $courses->modules;
         $lessons = $courses->lessons;
         // dd($modules);
