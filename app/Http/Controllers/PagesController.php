@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\Cast;
+use PhpParser\Node\Expr\Isset_;
 
 class PagesController extends Controller
 {
@@ -210,7 +211,7 @@ class PagesController extends Controller
         // $courses->payments = $payments;
 
   
-         $payments = Payments::where('course_id', $id)->where('user_id', Auth::user()->id)->first();
+         $payments = isset(Auth::user()) ? Payments::where('course_id', $id)->where('user_id', Auth::user()->id)->first()->id : null;
      
         // dd($payments);
      
