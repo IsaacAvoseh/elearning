@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Welcome;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Lesson;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\Cast;
 use PhpParser\Node\Expr\Isset_;
@@ -328,8 +330,12 @@ class PagesController extends Controller
             ]);
 
             $user->attachRole('admin');
-
-            return redirect()->route('login')->with('success', 'Admin account created successfully');
+            if($user){
+                Mail::to($user->email)->send(new Welcome($user));
+                return redirect()->route('login')->with('success', 'Admin account created successfully , Please check your email for confirmation');
+            }else{
+                return back()->with('error', 'Admin account not created, please try again');
+            }
         }
         return view('register');
     }
@@ -378,7 +384,12 @@ class PagesController extends Controller
 
             $user->attachRole('instructor');
 
-            return redirect()->route('login')->with('success', 'Instructor account created successfully');
+            if ($user) {
+                Mail::to($user->email)->send(new Welcome($user));
+                return redirect()->route('login')->with('success', 'Instructor account created successfully, Please check your email for confirmation');
+            } else {
+                return back()->with('error', 'Instructor account not created, please try again');
+            }
         }
         return view('register');
     }
@@ -427,7 +438,8 @@ class PagesController extends Controller
                     $url = "/details/$id/".$user->id;
                     return redirect($url);
                 }elseif(!$id){
-                    return redirect()->route('login')->with('success', 'Student account created successfully');
+                    Mail::to($user->email)->send(new Welcome($user));
+                    return redirect()->route('login')->with('success', 'Student account created successfully, Please check your email for confirmation');
 
                 }
             }
@@ -614,13 +626,13 @@ class PagesController extends Controller
         // dd($payments);
 
         return view('admin.view', compact('courses', 'modules', 'lessons', 'payments'));
-    
 
 
 
+    }
 
-
-
+    public function mail(){
+        return view('mail.welcome');
     }
    
 

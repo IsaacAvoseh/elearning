@@ -55,3 +55,4 @@ Route::match(['get', 'post'], '/all', [PagesController::class, 'all'] );
 Route::match(['get', 'post'], '/delete/{id}', [PagesController::class, 'deleteCourse'])->middleware('auth');
 Route::match(['get', 'post'], '/categories', [PagesController::class, 'categories'])->middleware('auth');
 Route::match(['get', 'post'], '/category/{id}', [PagesController::class, 'deleteCategory'])->middleware('auth');
+Route::match(['get', 'post'], '/mail', [PagesController::class, 'mail']);
