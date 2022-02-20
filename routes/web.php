@@ -33,7 +33,7 @@ Route::match(['post', 'get'], '/register', [PagesController::class, 'AdminRegist
 Route::match(['post', 'get'], '/inregister', [PagesController::class, 'InstructorRegister']);
 Route::match(['post', 'get'], '/stregister/{id?}', [PagesController::class, 'StudentRegister']);
 Route::match(['get','post'], '/login', [PagesController::class, 'login'])->name('login');
-Route::get('/dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [PagesController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route:: match(['get', 'post'], '/profile', [PagesController::class, 'profile'])->name('profile');
 Route::get('/courses', [PagesController::class, 'courses']);
 Route::match(['get', 'post'],'/instructors', [PagesController::class, 'instructor']);

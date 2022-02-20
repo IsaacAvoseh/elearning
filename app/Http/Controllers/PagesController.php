@@ -14,10 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\Cast;
 
 class PagesController extends Controller
 {
+
     public function index()
     {
 
@@ -168,7 +170,9 @@ class PagesController extends Controller
         // $payments = $courses->payments()->get();  //use first() to get the first record
         // $courses->payments = $payments;
 
-     $payments = Payments::where('course_id', $id)->where('user_id', Auth::user()['id'])->first();
+  
+         $payments = optional(Payments::where('course_id', $id)->where('user_id', Auth::user()['id'])->first());
+     
         // dd($payments);
      
 
@@ -364,6 +368,10 @@ class PagesController extends Controller
             }
 
         }
+
+        if($id){
+            Session::put('error', 'Please create an account or login to continue');
+        }
         return view('register', compact('id'));
     }
 
@@ -397,6 +405,7 @@ class PagesController extends Controller
 
     public function dashboard(Request $request)
     {
+        
 
         $courses = Course::all()->where('user_id', Auth::user()->id);
 
