@@ -210,7 +210,7 @@ class PagesController extends Controller
         // $courses->payments = $payments;
 
   
-         $payments = optional(Payments::where('course_id', $id)->where('user_id', Auth::user()['id'])->first());
+         $payments = isset(Payments::where('course_id', $id)->where('user_id', Auth::user()['id'])->first()->id) ? Payments::where('course_id', $id)->where('user_id', Auth::user()['id'])->first()->id : null;
      
         // dd($payments);
      
