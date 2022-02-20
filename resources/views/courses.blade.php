@@ -53,12 +53,17 @@
         <!-- Courses Category Wrapper Start  -->
         <div class="courses-category-wrapper">
             <div class="courses-search search-2">
-                <input type="text" placeholder="Search here">
-                <button><i class="icofont-search"></i></button>
+             
+                    <form method="post">
+                        @csrf
+                        <input type="text" name="search" placeholder="Search your course">
+                        <button type="submit"><i class="flaticon-magnifying-glass"></i></button>
+                    </form>
+               
             </div>
 
             <ul class="category-menu">
-                <li><a class="active" href="/courses">All Courses</a></li>
+                <li><a class="active" href="/allcourses" >All Courses</a></li>
                 <li><a href="#">Collections</a></li>
                 <li><a href="#">Wishlist</a></li>
                 <li><a href="#">Archived</a></li>

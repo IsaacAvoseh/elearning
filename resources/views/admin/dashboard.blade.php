@@ -395,7 +395,7 @@
                         <a class="dashboard-item-menu" href="#"><i class="fas fa-cog"></i>Settings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="dashboard-item-menu" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i>Back</a>
+                        <a class="dashboard-item-menu" href="->middleware('auth')->middleware('auth')"><i class="fas fa-arrow-left"></i>Back</a>
                     </li>
                     <li class="nav-item">
                         <a class="dashboard-item-menu" href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a>

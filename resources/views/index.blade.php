@@ -22,7 +22,7 @@
             <h4 class="sub-title">Start your favourite course</h4>
             <h2 class="main-title">Now learning from anywhere, and build your <span>bright career.</span></h2>
             <p>It has survived not only five centuries but also the leap into electronic typesetting.</p>
-            <a class="btn btn-primary btn-hover-dark" href="#">Start A Course</a>
+            <a class="btn btn-primary btn-hover-dark" href="/allcourses">Start A Course</a>
         </div>
         <!-- Slider Content End -->
 
@@ -98,9 +98,10 @@
 
             <!-- Courses Search Start -->
             <div class="courses-search">
-                <form action="#">
-                    <input type="text" placeholder="Search your course">
-                    <button><i class="flaticon-magnifying-glass"></i></button>
+                <form method="post">
+                    @csrf
+                    <input type="text" name="search" placeholder="Search your course">
+                    <button type="submit"><i class="flaticon-magnifying-glass"></i></button>
                 </form>
             </div>
             <!-- Courses Search End -->
@@ -112,7 +113,7 @@
         <div class="courses-tabs-menu courses-active">
             <div class="swiper-container">
                 <ul class="swiper-wrapper nav">
-                    <li class="swiper-slide"><button class="active" data-bs-toggle="tab" data-bs-target="#tabs1">UI/UX Design</button></li>
+                    <li class="swiper-slide"><button class="active"><a href="/">All Courses</a></button></li>
                     <li class="swiper-slide"><button data-bs-toggle="tab" data-bs-target="#tabs2">Development</button></li>
                     <li class="swiper-slide"><button data-bs-toggle="tab" data-bs-target="#tabs3">Data Science</button></li>
                     <li class="swiper-slide"><button data-bs-toggle="tab" data-bs-target="#tabs4">Business</button></li>
@@ -136,7 +137,7 @@
                 <div class="courses-wrapper">
                     <div class="row">
 
-
+                        @if($courses)
                         @foreach($courses as $course)
 
 
@@ -185,9 +186,15 @@
                         </div>
                         @endforeach
 
+
+                        @endif
+
                     </div>
                 </div>
                 <!-- All Courses Wrapper End -->
+                @if($courses == null)
+                {{ $courses->links('vendor.pagination.bootstrap-4') }}       
+                @endif
 
             </div>
 
@@ -218,7 +225,7 @@
 
         <!-- All Courses BUtton Start -->
         <div class="courses-btn text-center">
-            <a href="courses.html" class="btn btn-secondary btn-hover-primary">Other Course</a>
+            <a href="/allcourses" class="btn btn-secondary btn-hover-primary">Other Course</a>
         </div>
         <!-- All Courses BUtton End -->
 
@@ -250,7 +257,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="call-to-action-btn">
-                        <a class="btn btn-primary btn-hover-dark" href="contact.html">Drop Information</a>
+                        <a class="btn btn-primary btn-hover-dark" href="/inregister">Drop Information</a>
                     </div>
                 </div>
             </div>
@@ -362,7 +369,7 @@
                 <div class="col-lg-4 col-md-6">
 
                     <!-- Single Blog Start -->
-                    <div class="single-blog">
+                    <!-- <div class="single-blog">
                         <div class="blog-image">
                             <a href="blog-details-left-sidebar.html"><img src="assets/images/blog/blog-03.jpg" alt="Blog"></a>
                         </div>
@@ -390,7 +397,7 @@
 
                             <a href="blog-details-left-sidebar.html" class="btn btn-secondary btn-hover-primary">Read More</a>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Single Blog End -->
 
                 </div>

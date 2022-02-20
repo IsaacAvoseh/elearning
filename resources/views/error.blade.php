@@ -64,7 +64,7 @@
                         <h5 class="sub-title">This Page is Not Found.</h5>
                         <h2 class="main-title">We are very sorry for error. We <span> can’t find this</span> page.</h2>
                         <p>It has survived not only five centuries but also the leap into electronic typesetting.</p>
-                        <a href="/" class="btn btn-primary btn-hover-dark">Back To Home</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-primary btn-hover-dark">Go Back</a>
                     </div>
                     <!-- Error Content End -->
                 </div>

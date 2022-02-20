@@ -20,10 +20,10 @@ use PhpParser\Node\Expr\Cast;
 class PagesController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
 
-        $courses = Course::all();
+        $courses = Course::paginate('6');
         foreach ($courses as $course) {
 
 
@@ -43,12 +43,51 @@ class PagesController extends Controller
 
         }
         // dd ($courses[29]->modules[1] -> lessons()->get()[0]->video_link);
+    if($request->isMethod('post')){
+        // dd('jfjfj');
+            // Get the search value from the request
+            $search = $request->input('search');
+
+            // Search in the title and body columns from the posts table
+            $course2 = Course::query()
+                ->where('title', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->get();
+
+            // Return the search view with the resluts compacted
+            foreach ($course2 as $course) {
 
 
+                $course->modules = $course->modules()->get();
+                //count number of lessons in each course
+                $course->lessons = $course->lessons()->count();
 
+                $course->instructor = $course->users->name;
+            }
+            $courses = $course2;
+            // dd($courses);
+            return view('index', compact('courses'));
+    }
+
+    //    $course2 = array(null);
 
         return view('index', compact('courses'));
     }
+
+    // public function search(Request $request)
+    // {
+    //     // Get the search value from the request
+    //     $search = $request->input('search');
+
+    //     // Search in the title and body columns from the posts table
+    //     $course2 = Course::query()
+    //         ->where('title', 'LIKE', "%{$search}%")
+    //         ->orWhere('description', 'LIKE', "%{$search}%")
+    //         ->get();
+
+    //     // Return the search view with the resluts compacted
+    //     return view('index', compact('course2'));
+    // }
 
 
     public function profile(Request $request)
@@ -184,6 +223,31 @@ class PagesController extends Controller
     public function allCourses(Request $request)
     {
 
+        if ($request->isMethod('post')) {
+            // dd('jfjfj');
+            // Get the search value from the request
+            $search = $request->input('search');
+
+            // Search in the title and body columns from the posts table
+            $course2 = Course::query()
+                ->where('title', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->get();
+
+            // Return the search view with the resluts compacted
+            foreach ($course2 as $course) {
+
+
+                $course->modules = $course->modules()->get();
+                //count number of lessons in each course
+                $course->lessons = $course->lessons()->count();
+
+                $course->instructor = $course->users->name;
+            }
+            $courses = $course2;
+            // dd($courses);
+            return view('courses', compact('courses'));
+        }
         $courses = Course::all();
 
 
