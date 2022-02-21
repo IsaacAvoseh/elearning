@@ -116,12 +116,12 @@
                                     <!-- Tab Description Start -->
                                     <div class="tab-description">
                                         <!--  -->
-                                        @if($payments !== null)
+                                        @if($payments)
                                         @if(Auth::user() && $modules->isNotEmpty() && $lessons->isNotEmpty())
 
 
 
-                                        @if(Auth::user() && $payments['status'] == 'success')
+                                        @if(Auth::user() && $payments->status == 'success')
 
                                         <div class="container" style="margin-top: 20px">
 
