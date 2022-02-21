@@ -116,7 +116,7 @@
                                     <!-- Tab Description Start -->
                                     <div class="tab-description">
                                         <!--  -->
-                                        @if($payments)
+                                        @if($payments !== null)
                                         @if(Auth::user() && $modules->isNotEmpty() && $lessons->isNotEmpty())
 
 
