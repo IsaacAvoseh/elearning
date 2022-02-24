@@ -215,7 +215,7 @@ class PagesController extends Controller
   
          $payments = Auth::user()? (Payments::where('course_id', $id)->where('user_id', Auth::user()->id)): null;
      
-        // dd($payments);
+        dd($payments);
      
 
         return view('course_details', compact('courses', 'modules', 'lessons', 'payments'));
