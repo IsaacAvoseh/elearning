@@ -1,3 +1,7 @@
+Solution to google mail authentication while sending mail
+
+Login on another browser or in incognito mode and Enable this from the account in which you have configured the mail. https://accounts.google.com/b/0/DisplayUnlockCaptcha
+
 
 Live url - http://edule.herokuapp.com
 
