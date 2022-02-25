@@ -118,7 +118,7 @@
                                         <!--  -->
                             
                                         @if($payments !== 0)
-                                        @if(Auth::user() && $modules->isNotEmpty() && $lessons->isNotEmpty() % $payments->isNotEmpty() && $payments !== 0)
+                                        @if(Auth::user() && $modules->isNotEmpty() && $lessons->isNotEmpty() && $payments->isNotEmpty() && $payments !== 0)
 
 
 
