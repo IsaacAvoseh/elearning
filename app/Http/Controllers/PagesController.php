@@ -385,8 +385,13 @@ class PagesController extends Controller
             $user->attachRole('instructor');
 
             if ($user) {
+                try{
                 Mail::to($user->email)->send(new Welcome($user));
                 return redirect()->route('login')->with('success', 'Instructor account created successfully, Please check your email for confirmation');
+            }catch(\Exception $e){
+                    
+                    return redirect()->route('login')->with('success', 'Instructor account created successfully, but someting went wrong we could not send you welcome email. You can login.');
+            }
             } else {
                 return back()->with('error', 'Instructor account not created, please try again');
             }
@@ -438,8 +443,12 @@ class PagesController extends Controller
                     $url = "/details/$id/".$user->id;
                     return redirect($url);
                 }elseif(!$id){
+                    try{
                     Mail::to($user->email)->send(new Welcome($user));
                     return redirect()->route('login')->with('success', 'Student account created successfully, Please check your email for confirmation');
+                }catch(\Exception $e){
+                        return redirect()->route('login')->with('success', 'Student account created successfully, but someting went wrong, we could not send you welcome email. You can login '); 
+                }
 
                 }
             }

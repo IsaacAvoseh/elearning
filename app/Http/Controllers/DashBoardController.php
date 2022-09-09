@@ -26,7 +26,7 @@ class DashBoardController extends Controller
             $saved = Course::create($data);
             $course_id = $saved['id'];
             // dd($course_id);
-            return redirect()->route('newlesson', ['new' => $course_id]);
+            return redirect()->route('newlesson', ['new' => $course_id])->with('success', 'Course Added Successfully');
         }
         return view('admin.form');
     }
@@ -88,7 +88,7 @@ class DashBoardController extends Controller
                 $saved = Lesson::create($lesson);
             }
             $data = $data['course_id'];
-            return view('admin.newlesson', compact('data'));
+            return view('admin.newlesson', compact('data'))->with('success', 'Module and Lesson Added Successfully');
 
         }
         return view('admin.newlesson', compact('data'));

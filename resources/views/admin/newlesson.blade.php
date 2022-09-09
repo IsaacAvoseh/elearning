@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edufie - Online Courses Html Template</title>
+    <title>Edule</title>
     <!--fivicon icon-->
     <link rel="icon" href="asset/img/fevicon.png">
 
@@ -104,6 +104,7 @@
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-header">
+                            <p class="text-danger"> Click Submit to add more module and lesson, if you done adding modules and lessons, click the finish button</p>
                             <h4 class="card-title">Create New</h4>
                         </div>
                         <div class="card-body">
@@ -186,6 +187,12 @@
                             <form method="post">
                                 @csrf
                                 @include('flash')
+                                @csrf
+                                @if(Session::has('success'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('success') }}
+                                </div>
+                                @endif
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -200,7 +207,7 @@
                                         <div class="form-group">
                                             <label for="lesson1">Lesson 1</label>
                                             <input type="text" class="form-control" name="lesson1" id="email" placeholder="Enter Lesson Title">
-                                            <input type="text" class="form-control" name="lesson1v" id="email" placeholder="Enter Lesson Video link">
+                                            <input type="text" class="form-control" name="lesson1v" id="email" placeholder="Paste the video embed code(i.e youtube embed link )">
                                         </div>
                                     </div>
 
@@ -211,7 +218,7 @@
                                         <div class="form-group">
                                             <label for="lesson1">Lesson 2</label>
                                             <input type="text" class="form-control" name="lesson2" id="email" placeholder="Enter Lesson Title">
-                                            <input type="text" class="form-control" name="lesson2v" id="email" placeholder="Enter Lesson Video link">
+                                            <input type="text" class="form-control" name="lesson2v" id="email" placeholder="Paste the video embed code(i.e youtube embed link )">
                                         </div>
                                     </div>
 
@@ -220,30 +227,30 @@
                                         <div class="form-group">
                                             <label for="lesson1">Lesson 3</label>
                                             <input type="text" class="form-control" name="lesson3" id="email" placeholder="Enter Lesson Title">
-                                            <input type="text" class="form-control" name="lesson3v" id="email" placeholder="Enter Lesson Video link">
+                                            <input type="text" class="form-control" name="lesson3v" id="email" placeholder="Paste the video embed code(i.e youtube embed link )">
                                         </div>
                                     </div>
 
                                     <hr>
 
 
-                                    <div class="col-md-6">
+                                    <div class=" col-md-6">
                                         <div class="form-group">
                                             <label for="lesson1">Lesson 4</label>
                                             <input type="text" class="form-control" name="lesson4" id="email" placeholder="Enter Lesson Title">
-                                            <input type="text" class="form-control" name="lesson4v" id="email" placeholder="Enter Lesson Video link">
+                                            <input type="text" class="form-control" name="lesson4v" id="email" placeholder="Paste the video embed code(i.e youtube embed link )">
                                         </div>
                                     </div>
 
 
-                                    <div class="col-md-6">
+                                    <div class=" col-md-6">
                                         <div class="form-group">
                                             <label for="lesson1">Lesson 5</label>
                                             <input type="text" class="form-control" name="lesson5" id="email" placeholder="Enter Lesson Title">
-                                            <input type="text" class="form-control" name="lesson5v" id="email" placeholder="Enter Lesson Video link">
+                                            <input type="text" class="form-control" name="lesson5v" id="email" placeholder="Paste the video embed code(i.e youtube embed link )">
                                         </div>
                                     </div>
-                                    <input hidden type="text" name="course_id" value="{{ $data }}">
+                                    <input hidden type=" text" name="course_id" value="{{ $data }}">
                                     <hr>
 
 
@@ -254,15 +261,28 @@
                                     </style>
 
 
+
+
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group" m='auto'>
                                             <label for="
                                             ">&nbsp;</label>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group" mt='5%'>
+                                        <!-- <p class="text-danger"> Do not click me if you have more lesson to add</p> -->
+                                        <p></p>
+                                        <label for="
+        ">&nbsp;</label>
+                                        <a href="/dashboard" class="btn btn-success">Finish</a>
                                     </div>
                                 </div>
                         </div>
+
                         </form>
                     </div>
                 </div>

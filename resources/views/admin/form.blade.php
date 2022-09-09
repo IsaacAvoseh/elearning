@@ -104,12 +104,20 @@
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-header">
+                            <p class="text-danger" >Add general details about your course, click submit to add modules and lessons</p>
                             <h4 class="card-title">Create New</h4>
                         </div>
                         <div class="card-body">
                             <hr>
                             <form action="/newcourse" method="POST">
                                 @csrf
+                                @if(Session::has('success'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('success') }}
+                                </div>
+                                @endif
+
+                                
                                 @include('flash')
                                 <div class="row">
 
