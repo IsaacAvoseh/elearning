@@ -186,13 +186,16 @@
                         </div>
                         @endforeach
 
-
+                        @else
+                        <div class="mx-auto">
+                            <h4 >No result available at the moment</h4>
+                        </div>
                         @endif
 
                     </div>
                 </div>
                 <!-- All Courses Wrapper End -->
-                @if($courses == null)
+                @if($courses != null)
                 {{ $courses->links('vendor.pagination.bootstrap-4') }}       
                 @endif
 

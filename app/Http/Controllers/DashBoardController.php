@@ -138,7 +138,7 @@ class DashBoardController extends Controller
 
 
     public function payment(Request $request){
-dd($request->all());
+// dd($request->all());
         if($request['response']['status']=='success'){
             //for debby's sake
             $all_request = $request->all();

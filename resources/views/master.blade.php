@@ -126,8 +126,8 @@
                                     <!-- PROFILE DROPDOWN - scrolling off the page to the right -->
                                     <li class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img style="width: 50px; height:50px; border-radius: 50%;" src="{{ Auth::user()->photo }}" alt="">
-                                            {{ Auth::user()->name }}
+                                            <img style="width: 50px; height:50px; border-radius: 50%;" src="{{ Auth::user()->photo?? '' }}" alt="">
+                                            {{ Auth::user()->name?? '-' }}
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navDropDownLink">
                                             <a class="dropdown-item" href="/dashboard">Dashboard</a>
@@ -451,7 +451,7 @@
                             <a href="#">Security</a>
                         </div>
                         <div class="copyright-text">
-                            <p>&copy; 2021 <span> Edule </span> Made with <i class="icofont-heart-alt"></i> by <a href="#">Codecarnival</a></p>
+                            <p>&copy; 2021 <span> Edule </span></p>
                         </div>
                     </div>
                     <!-- Footer Copyright End -->

@@ -72,10 +72,11 @@
         <!-- Courses Category Wrapper End  -->
 
         <!-- Courses Wrapper Start  -->
+        @include('flash')
         <div class="courses-wrapper-02">
             <div class="row">
 
-                @foreach($courses as $course)
+                @forelse($courses as $course)
 
                 <div class="col-lg-4 col-md-6">
                     <!-- Single Courses Start -->
@@ -134,7 +135,11 @@
 
 
                 </div>
-                @endforeach
+                @empty
+                 <div class="mx-auto">
+                            <h4 >No result available at the moment</h4>
+                        </div>
+                @endforelse
 
             </div>
         </div>

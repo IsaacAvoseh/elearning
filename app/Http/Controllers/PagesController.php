@@ -20,12 +20,14 @@ use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\Cast;
 use PhpParser\Node\Expr\Isset_;
 
+use function Symfony\Component\String\b;
+
 class PagesController extends Controller
 {
 
     public function index(Request $request)
     {
-
+        try{
         $courses = Course::paginate('6');
         foreach ($courses as $course) {
 
@@ -35,19 +37,15 @@ class PagesController extends Controller
             $course->lessons = $course->lessons()->count();
 
             $course->instructor = $course->users->name;
-
-
-            // dd($course->lessons());
-
-            // $course['modules'] = $courses;
-            // $course['users'] = $courses;
-            // $course['users'] = $course;
-            // dd($courses);
-
         }
+    }catch(\Exception $e)
+    {
+        $courses = 0;
+        return view('index', compact('courses'));
+    }
         // dd ($courses[29]->modules[1] -> lessons()->get()[0]->video_link);
     if($request->isMethod('post')){
-        // dd('jfjfj');
+        
             // Get the search value from the request
             $search = $request->input('search');
 
@@ -77,20 +75,7 @@ class PagesController extends Controller
         return view('index', compact('courses'));
     }
 
-    // public function search(Request $request)
-    // {
-    //     // Get the search value from the request
-    //     $search = $request->input('search');
-
-    //     // Search in the title and body columns from the posts table
-    //     $course2 = Course::query()
-    //         ->where('title', 'LIKE', "%{$search}%")
-    //         ->orWhere('description', 'LIKE', "%{$search}%")
-    //         ->get();
-
-    //     // Return the search view with the resluts compacted
-    //     return view('index', compact('course2'));
-    // }
+   
 
 
     public function profile(Request $request)
@@ -122,11 +107,6 @@ class PagesController extends Controller
 
         ]);
 
-
-
-
-             
-
             return redirect()->back()->with('success', 'Profile Updated Successfully');
 
 
@@ -137,26 +117,6 @@ class PagesController extends Controller
 
         return view('admin.profile');
     }
-
-    //  public function instructors(Request $request){
-
-    //     if($request->isMethod('post')){
-    //      $instructors = DB::table('users')->where('status', 'suspended')->update([
-
-    //          'status' => $request->status
-
-    //      ]);
-    //     dd($instructors);
-
-    //      return back()->with(['success', 'Status Updated Successfully']);
-
-    //     }
-
-    //      $instructors = DB::table('users')->where('status', 'suspended');
-
-
-    //     return view('admin.instructors', compact('instructors'));
-    // }
 
 
 
@@ -202,7 +162,7 @@ class PagesController extends Controller
     {
 
 
-        $courses = Course::find($id);
+        $courses = Course::findOrfail($id);
         $courses->instructor = $courses->users->name;
         // dd($courses);
         $modules =  $courses->modules;
@@ -227,15 +187,19 @@ class PagesController extends Controller
     {
 
         if ($request->isMethod('post')) {
-            // dd('jfjfj');
+        
             // Get the search value from the request
             $search = $request->input('search');
 
             // Search in the title and body columns from the posts table
+            try{
             $course2 = Course::query()
                 ->where('title', 'LIKE', "%{$search}%")
                 ->orWhere('description', 'LIKE', "%{$search}%")
                 ->get();
+            }catch(\Exception $e){
+                return back()->with('error', 'Cant search something went wrong');
+            }
 
             // Return the search view with the resluts compacted
             foreach ($course2 as $course) {
@@ -251,7 +215,13 @@ class PagesController extends Controller
             // dd($courses);
             return view('courses', compact('courses'));
         }
+        try{
         $courses = Course::all();
+        }catch(\Exception $e)
+        {
+            $courses = [];
+            return view('courses', compact('courses'));    
+        }
 
 
         return view('courses', compact('courses'));
@@ -294,6 +264,7 @@ class PagesController extends Controller
     public function AdminRegister(Request $request)
     {
         if ($request->isMethod('post')) {
+            try {
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -305,7 +276,7 @@ class PagesController extends Controller
                 'password' => 'required|string|min:6|confirmed',
             ]);
 
-
+          
             if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
                 $image_name = $image->getClientOriginalName();
@@ -330,9 +301,17 @@ class PagesController extends Controller
             ]);
 
             $user->attachRole('admin');
+        } catch (\Exception $e) {
+                return back()->with('error', 'An error occurred, It seems you cant register at this time, we are fixing it');
+            }
             if($user){
+                try{
                 Mail::to($user->email)->send(new Welcome($user));
                 return redirect()->route('login')->with('success', 'Admin account created successfully , Please check your email for confirmation');
+                } catch (\Exception $e) {
+                    return back()->with('error', 'Admin account created successfully , confirmation email not sent ');
+                }
+
             }else{
                 return back()->with('error', 'Admin account not created, please try again');
             }
@@ -347,9 +326,10 @@ class PagesController extends Controller
     public function InstructorRegister(Request $request)
     {
         if ($request->isMethod('post')) {
+            
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email',
                 'firstname' => 'required|string|',
                 'lastname' => 'required|string|',
                 'phone' => 'required|string|',
@@ -358,7 +338,7 @@ class PagesController extends Controller
                 'password' => 'required|string|min:6|confirmed',
             ]);
 
-
+            try{
             if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
                 $image_name = $image->getClientOriginalName();
@@ -383,6 +363,9 @@ class PagesController extends Controller
             ]);
 
             $user->attachRole('instructor');
+        } catch (\Exception $e) {
+                return back()->with('error', 'An error occurred, make you are not using an email that has been used before, though it seems you cant register at this time, we are fixing it');
+            }
 
             if ($user) {
                 try{
@@ -390,7 +373,7 @@ class PagesController extends Controller
                 return redirect()->route('login')->with('success', 'Instructor account created successfully, Please check your email for confirmation');
             }catch(\Exception $e){
                     
-                    return redirect()->route('login')->with('success', 'Instructor account created successfully, but someting went wrong we could not send you welcome email. You can login.');
+                    return redirect()->route('login')->with('success', 'Instructor account created successfully, but something went wrong we could not send you welcome email. You can login.');
             }
             } else {
                 return back()->with('error', 'Instructor account not created, please try again');
@@ -405,22 +388,23 @@ class PagesController extends Controller
         if ($request->isMethod('post')) {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email',
                 'firstname' => 'required|string',
                 'lastname' => 'required|string',
                 'phone' => 'required|string',
                 'password' => 'required|string|min:6|confirmed',
             ]);
 
-            if ($request->has('photo')) {
-                $image = $request->file('photo');
-                $image_name = $image->getClientOriginalName();
-                $image->move(public_path('/images'), $image_name);
-                $image_path = '/images/' . $image_name;
-            } else {
-                $image_path = '/images/default.jpg';
-            }
-
+            
+            try{
+                if ($request->has('photo')) {
+                    $image = $request->file('photo');
+                    $image_name = $image->getClientOriginalName();
+                    $image->move(public_path('/images'), $image_name);
+                    $image_path = '/images/' . $image_name;
+                } else {
+                    $image_path = '/images/default.jpg';
+                }
             $user = User::create([
                 'name' => $request->name,
                 'email' => strtolower($request->email),
@@ -432,8 +416,11 @@ class PagesController extends Controller
                 'photo' => $image_path,
                 'password' => Hash::make($request->password),
             ]);
-
             $user->attachRole('user');
+            } catch (\Exception $e) {
+                return back()->with('error', 'An error occurred, make you are not using an email that has been used before, though it seems you cant register at this time, we are fixing it');
+            }
+
 
             if ($user ) {
                 if ($id) {
@@ -447,7 +434,7 @@ class PagesController extends Controller
                     Mail::to($user->email)->send(new Welcome($user));
                     return redirect()->route('login')->with('success', 'Student account created successfully, Please check your email for confirmation');
                 }catch(\Exception $e){
-                        return redirect()->route('login')->with('success', 'Student account created successfully, but someting went wrong, we could not send you welcome email. You can login '); 
+                        return redirect()->route('login')->with('success', 'Student account created successfully, but something went wrong, we could not send you welcome email. You can login '); 
                 }
 
                 }
@@ -469,7 +456,12 @@ class PagesController extends Controller
                 'password' => 'required|string|min:6',
             ]);
 
-            $user = User::where('email', $request->email)->first();
+            try{
+                $user = User::where('email', $request->email)->first();
+            } catch (\Exception $e) {
+                return back()->with('error', 'An error occurred, you cant login at this time');
+            }
+
 
             if ($user && Hash::check($request->password, $user->password)) {
                 //check if user instructor status is active
@@ -509,17 +501,15 @@ class PagesController extends Controller
 
 
         //total amount from database
-        //  $totalAmount[0] = Payments::select(DB::raw('sum(cast(amount as double))'))->get();
-        // $totalAmount = DB::raw('SUM(amount)');
-        // $totalAmount = Payments::select(DB::raw('sum(cast(amount as double precision))'))->get();
+        
         $totalAmount = DB::table('payments')->sum('amount');
         // dd($totalAmount);
         // dd($totalAmount);
 
         //total earnings for an instructor
-        // $totalInstructorEarnings = DB::table('payments')->where('user_id', Auth::user()->id)->select("SUM(amount)");
+       
         $totalInstructorEarnings = DB::table('payments')->where('instructor', Auth::user()->name)->sum('amount');
-        // dd($totalInstructorEarnings);
+       
         // dd($totalInstructorEarnings);
 
         //total students enrolled for an instructor course
@@ -532,8 +522,7 @@ class PagesController extends Controller
 
         //list of course enrolled for by a student
         $enrolled = Payments::with( 'course')->where('user_id', Auth::user()->id)->get();
-        // dd(Auth::user()->id);
-        // dd($enrolled);
+       
         //all categories 
           $categoryCount = DB::table('categories')->count()
 ;
@@ -621,7 +610,7 @@ class PagesController extends Controller
 
  
 
-        $courses = Course::find($id);
+        $courses = Course::findOrfail($id);
         // dd($courses);
         $courses->instructor = $courses->users->name;
         $modules =  $courses->modules;

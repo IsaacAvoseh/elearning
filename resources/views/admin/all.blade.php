@@ -62,9 +62,9 @@
                     <div class="row">
                         <div class="col-xl-6">
                             <span class="header-user">
-                                <a href="#"><img style="width: 70px; height: 70px; border-radius:50%" src="{{ Auth::user()->photo }}" alt="img"></a>
+                                <a href="#"><img style="width: 70px; height: 70px; border-radius:50%" src="{{ Auth::user()->photo?? '' }}" alt="img"></a>
                                 <span>Hello,
-                                    <h5>{{ Auth::user()['name']}}</h5>
+                                    <h5>{{ Auth::user()['name']?? '-'}}</h5>
                                 </span>
                             </span>
                         </div>
