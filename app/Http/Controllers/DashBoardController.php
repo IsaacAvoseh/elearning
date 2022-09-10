@@ -168,15 +168,6 @@ dd($request->all());
     }
     
 
-
-
-
-
-
-
-
-
-
     //logout
     public function logout()
     {
